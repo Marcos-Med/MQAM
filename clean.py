@@ -4,14 +4,14 @@ def delete(all_results):
     for movie in all_results:
         if movie['budget'] == 0 or movie['revenue'] == 0:
             all_results.remove(movie)
-            continue
-        flag = False
-        for a in movie['Ratings']:
-            if a[0] == 'Rotten Tomatoes':
-                flag = True
-                break
-        if not flag:
-            all_results.remove(movie)
+            ##continue
+        ##flag = False
+        ##for a in movie['Ratings']:
+            ##if a[0] == 'Rotten Tomatoes':
+                ##flag = True
+                ##break
+        ##if not flag:
+            ##all_results.remove(movie)
   
 def clean(all_results):
     for movie in all_results:
