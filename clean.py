@@ -1,7 +1,9 @@
 import pandas as pd
 
 def delete(all_results):
-    all_results = [movie for movie in all_results if movie['budget'] != 0 and movie['revenue'] != 0]
+    for i in range(len(all_results) - 1, -1, -1):
+        if all_results[i]['budget'] == 0 or all_results[i]['revenue'] == 0:
+            del all_results[i]
 
 ##def delete(all_results):
     ##for movie in all_results:
