@@ -80,6 +80,26 @@ def createCSV(data, filename):
     dataFrame = pandas.DataFrame(data)
     dataFrame.to_csv(filename, index= False)
 
+def delete(all_results):
+    for movie in all_results:
+        if movie['budget'] == 0 or movie['revenue'] == 0:
+            all_results.remove(movie)
+            continue
+        flag = False
+        for a in movie['Ratings']:
+            if a['Source'] == 'Rotten Tomatoes':
+                flag = True
+                break
+        if not flag:
+            all_results.remove(movie)
+  
+def clean(all_results):
+    for movie in all_results:
+        movie['production_companies'] = [{'name': company['name']} for company in movie['production_companies']]
+        for a in movie['Ratings']:
+            if a['Source'] == 'Rotten Tomatoes':
+                movie['Ratings'] = a
+
 def main():
     filename = "Movies.csv"
     all_results = []
@@ -89,7 +109,7 @@ def main():
     total = 0
     page = 1
     print("Init - Extract Data TMDB\n")
-    while total < 400:
+    while total < 1000:
         results = getPopularMovies(tokenTMDB, page)
         if results:
             for movie in results:
@@ -104,7 +124,8 @@ def main():
     columns = ['adult', 'backdrop_path', 'belongs_to_collection', 'homepage',
                'id', 'original_language', 'original_title', 'overview', 'popularity',
                'poster_path', 'production_countries', 'release_date', 'spoken_languages',
-               'status', 'tagline', 'title', 'video', 'vote_average', 'vote_count', 'genres']
+               'status', 'tagline', 'title', 'video', 'vote_average', 'vote_count', 'genres', 'imdb_id', 'original-country',
+               'seriesID']
     for movie in all_results:
         result = getDetailsMovie(tokenTMDB, movie['id'])
         if result:
@@ -114,7 +135,7 @@ def main():
     columns = ['Title','Rated','Released', 'Runtime', 'Writer', 'Actors',
                'Plot', 'Language', 'Awards', 'Poster', 'Metascore', 'imdbRating',
                'imdbVotes', 'imdbID', 'Type', 'DVD', 'BoxOffice', 'Production',
-               'Website', 'Response']
+               'Website', 'Response', 'Episode', 'Season', 'Error']
     a = 0
     for movie in all_results:
         result = getMovieOMDB(keyOMDB, movie['imdb_id'])
@@ -122,10 +143,6 @@ def main():
             for column in columns:
                 result.pop(column, None)
             movie.update(result)
-    columns = ['imdb_id	', 'origin_country', 'Season', 'Episode	', 'seriesID', 'Error']
-    for movie in all_results:
-        for column in columns:
-            movie.pop(column, None)
     createCSV(all_results, filename)
     print("Finished - Extract Data TMDB\n")
     
