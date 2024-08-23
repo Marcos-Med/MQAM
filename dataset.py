@@ -17,7 +17,7 @@ def getDetailsMovie(token, ID):
         data = response.json()
         return data
     except requests.exceptions.RequestException:
-        print("Error fetching data")
+        print("Error fetching data 1")
     except json.decoder.JSONDecodeError:
         print("Error decoding JSON")
     except KeyError:
@@ -30,7 +30,7 @@ def getMovieOMDB(keyAPI, ID):
         data = response.json()
         return data
     except requests.exceptions.RequestException:
-        print("Error fetching data")
+        print("Error fetching data 2")
     except json.decoder.JSONDecodeError:
         print("Errod decoding JSON")
     except KeyError:
@@ -52,7 +52,7 @@ def getDirectorMovie(token, ID):
                 listDirector.extend(person)
         return listDirector 
     except requests.exceptions.RequestException:
-        print("Error fetching data")
+        print("Error fetching data 3")
     except json.decoder.JSONDecodeError:
         print("Error decoding JSON")
     except KeyError:
@@ -70,7 +70,7 @@ def getPopularMovies(token, page):
         data = response.json()
         return data['results']
     except requests.exceptions.RequestException:
-        print("Error fetching data")
+        print("Error fetching data 4")
     except json.decoder.JSONDecodeError:
         print("Error decoding JSON")
     except KeyError:
