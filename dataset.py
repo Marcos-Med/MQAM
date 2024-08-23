@@ -122,6 +122,10 @@ def main():
             for column in columns:
                 result.pop(column, None)
             movie.update(result)
+    columns = ['imdb_id	', 'origin_country', 'Season', 'Episode	', 'seriesID', 'Error']
+    for movie in all_results:
+        for column in columns:
+            movie.pop(column, None)
     createCSV(all_results, filename)
     print("Finished - Extract Data TMDB\n")
     
