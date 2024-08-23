@@ -4,11 +4,16 @@ import json
 
 keyTMDB = "3f6b73f8a76ccf049e994634a5a2b273"
 keyOMDB = "d29535f4"
+tokenTMDB = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZjZiNzNmOGE3NmNjZjA0OWU5OTQ2MzRhNWEyYjI3MyIsIm5iZiI6MTcyNDM4MzY5OC4wNzE4NjEsInN1YiI6IjY2YzYxN2YzNTk2MWNlZTg3ZTY5ZWQzYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ogQ7duMdbP16GPUyGSB5E200SjzropEXsuZUvgxxVzs"
 
-def getDetailsMovie(keyAPI, ID):
+def getDetailsMovie(token, ID):
     try:
-        url = "https://api.themoviedb.org/3/movie/{}?api-key={}&language=pt-BR".format(ID, keyAPI)
-        response = requests.get(url)
+        headers = {
+            "accept": "application/json",
+            "Authorization": "Bearer {}".format(token)
+        }
+        url = "https://api.themoviedb.org/3/movie/{}?language=pt-BR".format(ID)
+        response = requests.get(url, headers=headers)
         data = response.json()
         return data
     except requests.exceptions.RequestException:
@@ -20,7 +25,7 @@ def getDetailsMovie(keyAPI, ID):
 
 def getMovieOMDB(keyAPI, ID):
     try:
-        url = "http://www.omdbapi.com/?i={}&plot=full&apikey={}".format(ID, keyAPI)
+        url = "http://www.omdbapi.com/?i={}&plot=full&apikey={}".format(ID,keyAPI)
         response = requests.get(url)
         data = response.json()
         return data
@@ -31,10 +36,14 @@ def getMovieOMDB(keyAPI, ID):
     except KeyError:
         print("keyError 2")
 
-def getDirectorMovie(keyAPI, ID):
+def getDirectorMovie(token, ID):
     try:
-        url = "https://api.themoviedb.org/3/movie/{}/credits?api-key={}&language=pt-BR".format(ID, keyAPI)
-        response = requests.get(url)
+        headers = {
+            "accept": "application/json",
+            "Authorization": "Bearer {}".format(token)
+        }
+        url = "https://api.themoviedb.org/3/movie/{}/credits?language=pt-BR".format(ID)
+        response = requests.get(url, headers=headers)
         data = response.json()
         data = data['results']['crew']
         listDirector = []
@@ -49,10 +58,14 @@ def getDirectorMovie(keyAPI, ID):
     except KeyError:
         print("KeyError")
 
-def getPopularMovies(keyAPI, page):
+def getPopularMovies(token, page):
     try:
-        url = "https://api.themoviedb.org/3/movie/popular?api_key={}&language=pt-BR&page={}".format(keyAPI, page)
-        response = requests.get(url)
+        headers = {
+            "accept": "application/json",
+            "Authorization": "Bearer {}".format(token)
+        }
+        url = "https://api.themoviedb.org/3/movie/popular?language=pt-BR&page={}".format(page)
+        response = requests.get(url, headers=headers)
         response.raise_for_status()
         data = response.json()
         return data['results']
@@ -77,7 +90,7 @@ def main():
     page = 1
     print("Init - Extract Data TMDB\n")
     while total < 400:
-        results = getPopularMovies(keyTMDB, page)
+        results = getPopularMovies(tokenTMDB, page)
         if results:
             for movie in results:
                 for column in columns:
@@ -90,12 +103,11 @@ def main():
         page += 1
     columns = ['adult', 'backdrop_path', 'belongs_to_collection', 'homepage',
                'id', 'original_language', 'original_title', 'overview', 'popularity',
-               'poster_path', 'production_countries', 'release_date', 'spoken_language',
-               'status', 'tagline', 'title', 'video', 'vote_average', 'vote_count']
+               'poster_path', 'production_countries', 'release_date', 'spoken_languages',
+               'status', 'tagline', 'title', 'video', 'vote_average', 'vote_count', 'genres']
     for movie in all_results:
-        result = getDetailsMovie(keyTMDB, movie['id'])
+        result = getDetailsMovie(tokenTMDB, movie['id'])
         if result:
-          print(result)
           for column in columns:
                 result.pop(column, None)
           movie.update(result)
@@ -103,14 +115,13 @@ def main():
                'Plot', 'Language', 'Awards', 'Poster', 'Metascore', 'imdbRating',
                'imdbVotes', 'imdbID', 'Type', 'DVD', 'BoxOffice', 'Production',
                'Website', 'Response']
+    a = 0
     for movie in all_results:
-        print(movie)
         result = getMovieOMDB(keyOMDB, movie['imdb_id'])
         if result:
             for column in columns:
                 result.pop(column, None)
             movie.update(result)
-            movie['Ratings'] = movie['Ratings'][1]["Value"]
     createCSV(all_results, filename)
     print("Finished - Extract Data TMDB\n")
     
