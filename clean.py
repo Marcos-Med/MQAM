@@ -1,4 +1,5 @@
 import pandas as pd
+import ast
 
 def delete(all_results):
     for i in range(len(all_results) - 1, -1, -1):
@@ -7,13 +8,17 @@ def delete(all_results):
   
 def clean(all_results):
     for movie in all_results:
-        for company in movie['production_companies']:
-            for a in company:
-                print(a)
-        movie['production_companies'] = [{'name': company['name']} for company in movie['production_companies']]
-        for a in movie['Ratings']:
-            if a[0] == 'Rotten Tomatoes':
-                movie['Ratings'] = a
+        dictionary = ast.literal_eval(movie['production_companies'])
+        movie['production_companies'] = [{'name': company['name']} for company in dictionary]
+        dictionary = ast.literal_eval(movie['Ratings'])
+        flag = False
+        for value in dictionary:
+            if(value['Source'] == 'Rotten Tomatoes'):
+                movie['Ratings'] = value['Value']
+                flag = True
+                break
+        if not flag:
+            all_results.remove(movie)
 
 def removeColumn(column, all_results):
     for movie in all_results:
@@ -31,7 +36,7 @@ def main():
     df = pd.read_csv("Movies.csv")
     all_results = df.to_dict(orient='records')
     delete(all_results)
-    ##clean(all_results)
+    clean(all_results)
     renames = [ 'popularidade','titulo', 'voto_popular', 'orcamento', 'produtoras', 'receita', 'duracao',
                'ano', 'genero', 'diretor', 'pais', 'avaliacao_da_critica']
     columns = ['popularity', 'title', 'vote_average', 'budget', 'production_companies', 'revenue', 'runtime',
