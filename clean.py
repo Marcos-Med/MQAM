@@ -18,11 +18,11 @@ def clean(all_results):
                 movie['Ratings'] = value['Value']
                 break
     index = []
-    for i in range(0, len(all_results)):
-        if (all_results[i]['Ratings'][-1] == ']'):
-            index.append(i)
+    for movie in all_results:
+        if movie['Ratings'][-1] == ']':
+            index.append(movie)
     for j in index:
-        del all_results[j]
+        all_results.remove(j)
 def removeColumn(column, all_results):
     for movie in all_results:
         del movie[column]
