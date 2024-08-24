@@ -105,7 +105,7 @@ def main():
     columns = ['adult', 'backdrop_path', 'belongs_to_collection', 'homepage',
                'id', 'original_language', 'original_title', 'overview', 'popularity',
                'poster_path', 'production_countries', 'release_date', 'spoken_languages',
-               'status', 'tagline', 'title', 'video', 'vote_average', 'vote_count', 'genres', 'original-country',
+               'status', 'tagline', 'title', 'video', 'vote_average', 'vote_count', 'genres', 'original_country',
                'seriesID']
     for movie in all_results:
         result = getDetailsMovie(tokenTMDB, movie['id'])

@@ -45,6 +45,7 @@ def main():
     columns = ['popularity', 'title', 'vote_average', 'budget', 'production_companies', 'revenue', 'runtime',
                'Year', 'Genre', 'Director', 'Country', 'Ratings']
     removeColumn('imdb_id', all_results)
+    removeColumn('origin_country', all_results)
     for i in range(0, len(columns)):
         renameColumn(columns[i], renames[i], all_results)
     createCSV(all_results, "Teste3.csv")
