@@ -38,9 +38,8 @@ def main():
                'Year', 'Genre', 'Director', 'Country', 'Ratings']
     removeColumn('imdb_id', all_results)
     removeColumn('Episode', all_results)
-    for column in columns:
-        for rename in renames:
-            renameColumn(column, rename, all_results)
+    for i in range(0, len(columns)):
+        renameColumn(columns[i], renames[i], all_results)
     createCSV(all_results, "Teste2.csv")
     
     
