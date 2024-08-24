@@ -24,8 +24,8 @@ def clean(all_results):
         if not flag:
             index.append(i)
         i += 1
-    for i in index:
-        all_results.pop(i)
+    for j in range(0, len(index)):
+        del all_results[j]
 
 def removeColumn(column, all_results):
     for movie in all_results:
