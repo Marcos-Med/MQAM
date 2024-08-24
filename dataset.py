@@ -82,7 +82,7 @@ def createCSV(data, filename):
 
 
 def main():
-    filename = "Movies.csv"
+    filename = "Movies2.csv"
     all_results = []
     columns = ['adult', 'backdrop_path', 'original_language', 'original_title',
                'overview', 'poster_path', 'video', 'vote_count', 'genre_ids',
@@ -105,7 +105,7 @@ def main():
     columns = ['adult', 'backdrop_path', 'belongs_to_collection', 'homepage',
                'id', 'original_language', 'original_title', 'overview', 'popularity',
                'poster_path', 'production_countries', 'release_date', 'spoken_languages',
-               'status', 'tagline', 'title', 'video', 'vote_average', 'vote_count', 'genres', 'imdb_id', 'original-country',
+               'status', 'tagline', 'title', 'video', 'vote_average', 'vote_count', 'genres', 'original-country',
                'seriesID']
     for movie in all_results:
         result = getDetailsMovie(tokenTMDB, movie['id'])
@@ -117,7 +117,6 @@ def main():
                'Plot', 'Language', 'Awards', 'Poster', 'Metascore', 'imdbRating',
                'imdbVotes', 'imdbID', 'Type', 'DVD', 'BoxOffice', 'Production',
                'Website', 'Response', 'Episode', 'Season', 'Error']
-    a = 0
     for movie in all_results:
         result = getMovieOMDB(keyOMDB, movie['imdb_id'])
         if result:

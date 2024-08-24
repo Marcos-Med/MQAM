@@ -36,7 +36,7 @@ def createCSV(data, filename):
     dataFrame.to_csv(filename, index= False)
 
 def main():
-    df = pd.read_csv("Movies.csv")
+    df = pd.read_csv("Movies2.csv")
     all_results = df.to_dict(orient='records')
     delete(all_results)
     clean(all_results)
@@ -45,10 +45,9 @@ def main():
     columns = ['popularity', 'title', 'vote_average', 'budget', 'production_companies', 'revenue', 'runtime',
                'Year', 'Genre', 'Director', 'Country', 'Ratings']
     removeColumn('imdb_id', all_results)
-    removeColumn('Episode', all_results)
     for i in range(0, len(columns)):
         renameColumn(columns[i], renames[i], all_results)
-    createCSV(all_results, "Teste2.csv")
+    createCSV(all_results, "Teste3.csv")
     
     
 if __name__ == "__main__":
