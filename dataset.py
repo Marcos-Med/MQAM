@@ -80,25 +80,6 @@ def createCSV(data, filename):
     dataFrame = pandas.DataFrame(data)
     dataFrame.to_csv(filename, index= False)
 
-def delete(all_results):
-    for movie in all_results:
-        if movie['budget'] == 0 or movie['revenue'] == 0:
-            all_results.remove(movie)
-            continue
-        flag = False
-        for a in movie['Ratings']:
-            if a['Source'] == 'Rotten Tomatoes':
-                flag = True
-                break
-        if not flag:
-            all_results.remove(movie)
-  
-def clean(all_results):
-    for movie in all_results:
-        movie['production_companies'] = [{'name': company['name']} for company in movie['production_companies']]
-        for a in movie['Ratings']:
-            if a['Source'] == 'Rotten Tomatoes':
-                movie['Ratings'] = a
 
 def main():
     filename = "Movies.csv"

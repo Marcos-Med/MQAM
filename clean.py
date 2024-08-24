@@ -4,26 +4,24 @@ def delete(all_results):
     for i in range(len(all_results) - 1, -1, -1):
         if all_results[i]['budget'] == 0 or all_results[i]['revenue'] == 0:
             del all_results[i]
-
-##def delete(all_results):
-    ##for movie in all_results:
-        ##if movie['budget'] == 0 or movie['revenue'] == 0:
-            ##all_results.remove(movie)
-            ##continue
-        ##flag = False
-        ##for a in movie['Ratings']:
-            ##if a[0] == 'Rotten Tomatoes':
-                ##flag = True
-                ##break
-        ##if not flag:
-            ##all_results.remove(movie)
   
 def clean(all_results):
     for movie in all_results:
-        movie['production_companies'] = [{'name': company[2]} for company in movie['production_companies']]
+        for company in movie['production_companies']:
+            for a in company:
+                print(a)
+        movie['production_companies'] = [{'name': company['name']} for company in movie['production_companies']]
         for a in movie['Ratings']:
             if a[0] == 'Rotten Tomatoes':
                 movie['Ratings'] = a
+
+def removeColumn(column, all_results):
+    for movie in all_results:
+        del movie[column]
+
+def renameColumn(column, rename, all_results):
+    for movie in all_results:
+        movie[rename] = movie.pop(column, None)
 
 def createCSV(data, filename):
     dataFrame = pd.DataFrame(data)
@@ -34,7 +32,16 @@ def main():
     all_results = df.to_dict(orient='records')
     delete(all_results)
     ##clean(all_results)
-    createCSV(all_results, "Teste.csv")
+    renames = [ 'popularidade','titulo', 'voto_popular', 'orcamento', 'produtoras', 'receita', 'duracao',
+               'ano', 'genero', 'diretor', 'pais', 'avaliacao_da_critica']
+    columns = ['popularity', 'title', 'vote_average', 'budget', 'production_companies', 'revenue', 'runtime',
+               'Year', 'Genre', 'Director', 'Country', 'Ratings']
+    removeColumn('imdb_id', all_results)
+    removeColumn('Episode', all_results)
+    for column in columns:
+        for rename in renames:
+            renameColumn(column, rename, all_results)
+    createCSV(all_results, "Teste2.csv")
     
     
 if __name__ == "__main__":
