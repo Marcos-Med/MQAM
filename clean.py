@@ -7,26 +7,22 @@ def delete(all_results):
             del all_results[i]
   
 def clean(all_results):
-    i = 0
-    index = []
     for movie in all_results:
         dictionary = ast.literal_eval(movie['production_companies'])
         movie['production_companies'] = []
         for company in dictionary:
             movie['production_companies'].append(company['name'])
         dictionary = ast.literal_eval(movie['Ratings'])
-        flag = False
         for value in dictionary:
             if(value['Source'] == 'Rotten Tomatoes'):
                 movie['Ratings'] = value['Value']
-                flag = True
                 break
-        if not flag:
+    index = []
+    for i in range(0, len(all_results)):
+        if (all_results[i]['Ratings'][-1] == ']'):
             index.append(i)
-        i += 1
-    for j in range(0, len(index)):
+    for j in index:
         del all_results[j]
-
 def removeColumn(column, all_results):
     for movie in all_results:
         del movie[column]
