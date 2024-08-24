@@ -8,6 +8,7 @@ def delete(all_results):
   
 def clean(all_results):
     i = 0
+    index = []
     for movie in all_results:
         dictionary = ast.literal_eval(movie['production_companies'])
         movie['production_companies'] = []
@@ -21,8 +22,10 @@ def clean(all_results):
                 flag = True
                 break
         if not flag:
-            all_results.pop(i)
+            index.append(i)
         i += 1
+    for i in index:
+        all_results.pop(i)
 
 def removeColumn(column, all_results):
     for movie in all_results:
