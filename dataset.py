@@ -36,28 +36,6 @@ def getMovieOMDB(keyAPI, ID):
     except KeyError:
         print("keyError 2")
 
-def getDirectorMovie(token, ID):
-    try:
-        headers = {
-            "accept": "application/json",
-            "Authorization": "Bearer {}".format(token)
-        }
-        url = "https://api.themoviedb.org/3/movie/{}/credits?language=pt-BR".format(ID)
-        response = requests.get(url, headers=headers)
-        data = response.json()
-        data = data['results']['crew']
-        listDirector = []
-        for person in data:
-            if(person['job'] == 'Director'):
-                listDirector.extend(person)
-        return listDirector 
-    except requests.exceptions.RequestException:
-        print("Error fetching data 3")
-    except json.decoder.JSONDecodeError:
-        print("Error decoding JSON")
-    except KeyError:
-        print("KeyError")
-
 def getPopularMovies(token, page):
     try:
         headers = {
@@ -82,7 +60,7 @@ def createCSV(data, filename):
 
 
 def main():
-    filename = "Movies2.csv"
+    filename = "Movies.csv"
     all_results = []
     columns = ['adult', 'backdrop_path', 'original_language', 'original_title',
                'overview', 'poster_path', 'video', 'vote_count', 'genre_ids',

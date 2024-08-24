@@ -36,7 +36,7 @@ def createCSV(data, filename):
     dataFrame.to_csv(filename, index= False)
 
 def main():
-    df = pd.read_csv("Movies2.csv")
+    df = pd.read_csv("Movies.csv")
     all_results = df.to_dict(orient='records')
     delete(all_results)
     clean(all_results)
@@ -49,7 +49,7 @@ def main():
     removeColumn('seriesID', all_results)
     for i in range(0, len(columns)):
         renameColumn(columns[i], renames[i], all_results)
-    createCSV(all_results, "Teste3.csv")
+    createCSV(all_results, "Final.csv")
     
     
 if __name__ == "__main__":
