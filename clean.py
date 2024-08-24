@@ -9,7 +9,9 @@ def delete(all_results):
 def clean(all_results):
     for movie in all_results:
         dictionary = ast.literal_eval(movie['production_companies'])
-        movie['production_companies'] = [{'name': company['name']} for company in dictionary]
+        movie['production_companies'] = []
+        for company in dictionary:
+            movie['production_companies'].append(company['name'])
         dictionary = ast.literal_eval(movie['Ratings'])
         flag = False
         for value in dictionary:
