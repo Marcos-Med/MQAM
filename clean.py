@@ -19,8 +19,6 @@ def clean(all_results):
                 movie['Ratings'] = value['Value']
                 flag = True
                 break
-        if not flag:
-            all_results.remove(movie)
 
 def removeColumn(column, all_results):
     for movie in all_results:
