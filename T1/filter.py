@@ -2,7 +2,7 @@ import pandas as pd
 
 def delete(all_results):
     for i in range(len(all_results) - 1, -1, -1):
-        if 2020 <= all_results[i]['ano'] <= 2024:
+        if not (2020 <= all_results[i]['ano'] <= 2024):
             del all_results[i]
 
 def createCSV(data, filename):
